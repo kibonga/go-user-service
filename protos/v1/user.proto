@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package protos.v1;
+
+option go_package = "protos/v1;users";
+
+message User {
+  string uuid = 1;
+  string full_name = 2;
+  int64 birth_year = 3;
+}
