@@ -1,0 +1,18 @@
+
+==========================================
+Formating
+==========================================
+1. clang-format -i <path-to-file>
+eg. clang-format -i protos/v1/user.proto
+
+==========================================
+Buf
+==========================================
+1. buf lint (Linting)
+2. buf generate (Generating proto based on buf.gen.yaml)
+
+==========================================
+Git
+==========================================
+1. gid diff <path-to-file>
+eg. git diff gen/go/protos/v1/user.pb.go

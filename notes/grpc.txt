@@ -1,0 +1,42 @@
+
+gRPC
+
+What is?
+
+What is used for?
+
+Types of rpc service methods
+1. Unary RPC
+2. Server streaming RPC
+3. Client streaming RPC
+4. Bidirectional RPC
+
+Prerequisites
+1. install protocol compiler plugins for GO
+go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.28
+go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
+
+What is Protocol Compiler(protoc)
+This is a tool that compiles protocol buffer .proto files into source code
+(automatically generate GO code from .proto files)
+
+package vs option go_package
+1. package - namespace for types in PB
+2. option go_package - specifies how the proto files should be compiled
+    a. package name - name used for importing
+    b. output dir for generated GO files - where compiled GO files will be placed
+
+=================================
+eg. for option go_package
+
+option go_package = "protos/user/v1;users";
+[protos/user/v1];[users]
+
+[protos/user/v1]
+import (
+    "path-to-file/protos/user/v1"
+)
+
+[users]
+newUser := users.User{}
+=================================

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package protos.user.v1;
+
+option go_package = "protos/user/v1;users";
+
+import "protos/user/v1/user.proto";
+
+service UserService {
+  rpc GetUser(GetUserRequest) returns (GetUserResponse) {};
+}
+
+message GetUserRequest {
+  string uuid = 1;
+}
+
+message GetUserResponse {
+  User user = 1;
+}
