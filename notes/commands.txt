@@ -16,3 +16,28 @@ Git
 ==========================================
 1. gid diff <path-to-file>
 eg. git diff gen/go/protos/v1/user.pb.go
+
+==========================================
+Go
+==========================================
+1. go mod tidy - cleans up modules
+(adds missing, removes unused modules, prunes unnecessary versions, updates go.mod and go.sum)
+
+
+==========================================
+grpcurl
+==========================================
+1. firstly we need to register reflection api for the grpc server
+- reflection.Register(grpcService)
+
+2. List services and methods
+    grpcurl -plaintext localhost:8080 list
+
+3. Describe services and methods
+    grpcurl -plaintext localhost:8080 describe protos.user.v1.UserService
+
+4. Describe message types
+    grpcurl -plaintext localhost:8080 describe .protos.user.v1.GetUserRequest
+
+5. Call remote method
+    grpcurl -plaintext -d '{"uuid": "abc"}' localhost:9879 protos.user.v1.UserService.GetUser

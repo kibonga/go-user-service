@@ -40,3 +40,11 @@ import (
 [users]
 newUser := users.User{}
 =================================
+
+=================================
+[serviceName]ServiceServer
+- go grpc generates a interface for the server API
+- we need to define a type that will implement this interface, and then assign/register that type to grpc server when instantiating
+- basically grpc server will be instantiated with the concrete type of [serviceName]ServiceServer
+=================================
+
