@@ -5,19 +5,19 @@ require 'google/protobuf'
 
 Google::Protobuf::DescriptorPool.generated_pool.build do
   add_file("protos/user/v1/user.proto", :syntax => :proto3) do
-    add_message "protos.user.v1.User" do
+    add_message "user.v1.User" do
       optional :uuid, :string, 1
       optional :full_name, :string, 2
       optional :birth_year, :int64, 3
       optional :salary, :float, 4
-      repeated :addresses, :message, 5, "protos.user.v1.Address"
-      optional :marital_status, :enum, 6, "protos.user.v1.MaritalStatus"
+      repeated :addresses, :message, 5, "user.v1.Address"
+      optional :marital_status, :enum, 6, "user.v1.MaritalStatus"
     end
-    add_message "protos.user.v1.Address" do
+    add_message "user.v1.Address" do
       optional :street, :string, 1
       optional :city, :string, 2
     end
-    add_enum "protos.user.v1.MaritalStatus" do
+    add_enum "user.v1.MaritalStatus" do
       value :MARITAL_STATUS_UNSPECIFIED, 0
       value :MARITAL_STATUS_SINGLE, 1
       value :MARITAL_STATUS_MARRIED, 2
@@ -25,12 +25,10 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
   end
 end
 
-module Protos
-  module User
-    module V1
-      User = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("protos.user.v1.User").msgclass
-      Address = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("protos.user.v1.Address").msgclass
-      MaritalStatus = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("protos.user.v1.MaritalStatus").enummodule
-    end
+module User
+  module V1
+    User = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("user.v1.User").msgclass
+    Address = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("user.v1.Address").msgclass
+    MaritalStatus = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("user.v1.MaritalStatus").enummodule
   end
 end

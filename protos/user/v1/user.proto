@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package protos.user.v1;
+package user.v1;
 
-option go_package = "protos/user/v1;users";
+option go_package = "user/v1;users";
 
 message User {
   string uuid = 1;
