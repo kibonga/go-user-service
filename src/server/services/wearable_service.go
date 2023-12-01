@@ -2,17 +2,19 @@ package services
 
 import (
 	wearable "UserManagment/gen/go/protos/wearable/v1"
+	"fmt"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"io"
 	"math/rand"
 	"time"
 )
 
-type WearableServiceImpl struct {
+type WearableServiceServerImpl struct {
 	wearable.UnimplementedWearableServiceServer
 }
 
-func (wearableServer *WearableServiceImpl) BeatsPerMinute(
+func (wearableServer *WearableServiceServerImpl) BeatsPerMinute(
 	req *wearable.BeatsPerMinuteRequest,
 	stream wearable.WearableService_BeatsPerMinuteServer) error {
 
@@ -34,4 +36,24 @@ func (wearableServer *WearableServiceImpl) BeatsPerMinute(
 		}
 	}
 
+}
+
+func (wearableServer *WearableServiceServerImpl) ConsumeBeatsPerMinute(stream wearable.WearableService_ConsumeBeatsPerMinuteServer) error {
+	var total uint32
+
+	for {
+		val, err := stream.Recv()
+		if err == io.EOF {
+			return stream.SendAndClose(&wearable.ConsumeBeatsPerMinuteResponse{
+				Total: total,
+			})
+		}
+
+		if err != nil {
+			return err
+		}
+
+		fmt.Println(val.GetUuid(), val.GetMinute(), val.GetValue())
+		total++
+	}
 }

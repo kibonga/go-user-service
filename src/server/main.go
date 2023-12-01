@@ -20,7 +20,7 @@ func main() {
 	grpcServer := grpc.NewServer()
 	reflection.Register(grpcServer)
 	users.RegisterUserServiceServer(grpcServer, &services.UserServiceImpl{})
-	wearable.RegisterWearableServiceServer(grpcServer, &services.WearableServiceImpl{})
+	wearable.RegisterWearableServiceServer(grpcServer, &services.WearableServiceServerImpl{})
 	fmt.Println("Server started...")
 	grpcServer.Serve(listener)
 }

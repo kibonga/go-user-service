@@ -5,14 +5,23 @@ package wearable.v1;
 option go_package = "wearable/v1;wearable";
 
 service WearableService {
-    rpc BeatsPerMinute(BeatsPerMinuteRequest) returns (stream BeatsPerMinuteResponse) {}
+  rpc BeatsPerMinute(BeatsPerMinuteRequest)
+      returns (stream BeatsPerMinuteResponse) {}
+  rpc ConsumeBeatsPerMinute(stream ConsumeBeatsPerMinuteRequest)
+      returns (ConsumeBeatsPerMinuteResponse) {}
 }
 
-message BeatsPerMinuteRequest {
-    string uuid = 1;
-}
+message BeatsPerMinuteRequest { string uuid = 1; }
 
 message BeatsPerMinuteResponse {
-    uint32 value = 1;
-    uint32 minute = 2;
+  uint32 value = 1;
+  uint32 minute = 2;
 }
+
+message ConsumeBeatsPerMinuteRequest {
+  string uuid = 1;
+  uint32 value = 2;
+  uint32 minute = 3;
+}
+
+message ConsumeBeatsPerMinuteResponse { uint32 total = 1; }
