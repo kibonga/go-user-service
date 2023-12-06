@@ -6,6 +6,10 @@
         <path>$PROJECT_DIR$</path>
         <yaml>$PROJECT_DIR$/buf.yaml</yaml>
       </module>
+      <module>
+        <path>$PROJECT_DIR$</path>
+        <yaml>$PROJECT_DIR$/buf.yaml</yaml>
+      </module>
     </modules>
   </component>
 </project>

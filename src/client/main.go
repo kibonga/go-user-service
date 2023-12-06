@@ -3,57 +3,50 @@ package main
 import (
 	"UserManagment/gen/go/protos/wearable/v1"
 	"context"
-	"fmt"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-	"io"
 	"log"
-	"sync"
+	"math/rand"
+	"time"
 )
 
 func main() {
-	options := []grpc.DialOption{
+	opts := []grpc.DialOption{
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	}
 
-	conn, err := grpc.Dial("localhost:9879", options...)
+	conn, err := grpc.Dial("localhost:9879", opts...)
 	if err != nil {
-		log.Fatalf("failed to dial grpc server %v", err)
+		log.Fatalf("failed to dial: %v", err)
 	}
 
 	defer conn.Close()
 
-	grpcClient := wearable.NewWearableServiceClient(conn)
+	client := wearable.NewWearableServiceClient(conn)
 
-	stream, err := grpcClient.BeatsPerMinute(context.Background(), &wearable.BeatsPerMinuteRequest{
-		Uuid: "sample-uuid",
-	})
-
+	stream, err := client.ConsumeBeatsPerMinute(context.Background())
 	if err != nil {
-		log.Fatalf("stream failed %v", err)
+		log.Fatalf("failed to create stream: %v", err)
 	}
 
-	var wg sync.WaitGroup
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
+	for i := 0; i < 10; i++ {
+		err = stream.Send(&wearable.ConsumeBeatsPerMinuteRequest{
+			Uuid:   "abc",
+			Value:  uint32(i * rand.Intn(100)),
+			Minute: uint32(i + 1),
+		})
 
-		for {
-			val, err := stream.Recv()
-
-			fmt.Println(val)
-
-			if err == io.EOF {
-				return
-			}
-
-			if err != nil {
-				log.Fatalf("stream failed in goroutine %v", err)
-			}
-
-			fmt.Println(val)
+		if err != nil {
+			log.Fatalf("failed to send: %v", err)
 		}
-	}()
 
-	wg.Wait()
+		time.Sleep(100 * time.Millisecond)
+	}
+
+	resp, err := stream.CloseAndRecv()
+	if err != nil {
+		log.Fatalf("failed to close: %v", err)
+	}
+
+	log.Println(resp.GetTotal())
 }

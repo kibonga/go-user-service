@@ -18,6 +18,7 @@ func (wearableServer *WearableServiceServerImpl) BeatsPerMinute(
 	req *wearable.BeatsPerMinuteRequest,
 	stream wearable.WearableService_BeatsPerMinuteServer) error {
 
+	// On the server side, server receives the request and then returns the stream response
 	for {
 		select {
 		case <-stream.Context().Done():
@@ -41,6 +42,7 @@ func (wearableServer *WearableServiceServerImpl) BeatsPerMinute(
 func (wearableServer *WearableServiceServerImpl) ConsumeBeatsPerMinute(stream wearable.WearableService_ConsumeBeatsPerMinuteServer) error {
 	var total uint32
 
+	// On server side, server receives a value from the stream (which is sent by the client)
 	for {
 		val, err := stream.Recv()
 		if err == io.EOF {
