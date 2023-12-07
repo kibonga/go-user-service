@@ -59,3 +59,34 @@ func (wearableServer *WearableServiceServerImpl) ConsumeBeatsPerMinute(stream we
 		total++
 	}
 }
+
+func (wearableServer *WearableServiceServerImpl) CalculateBeatsPerMinute(stream wearable.WearableService_CalculateBeatsPerMinuteServer) error {
+	var count, total uint32
+
+	// On server side, server receives values from the stream, computes them and returns a stream response
+	for {
+		req, err := stream.Recv()
+		if err == io.EOF {
+			return nil
+		}
+
+		if err != nil {
+			return err
+		}
+
+		total += req.GetValue()
+		fmt.Println("received: ", req.GetValue())
+
+		count++
+		if (count % 5) == 0 {
+			fmt.Println("total:", total, "sending: ", float32(total)/5)
+			if err := stream.Send(&wearable.CalculateBeatsPerMinuteResponse{
+				Average: float32(total) / 5,
+			}); err != nil {
+				return nil
+			}
+
+			total = 0
+		}
+	}
+}
